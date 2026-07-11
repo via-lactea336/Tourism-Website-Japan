@@ -1,0 +1,25 @@
+---
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import StorySection from "../components/StorySection.astro";
+import Experiences from "../components/Experiences.astro";
+import Footer from "../components/Footer.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import HomeMotion from "../components/HomeMotion.astro";
+import EditorialSections from "../components/EditorialSections.astro";
+
+const description =
+  "Experience Japan's top destinations through Tokyo, Kyoto, Osaka and Nara with a responsive Astro and Tailwind travel website.";
+---
+
+<BaseLayout title="Tourism Website Japan" description={description}>
+  <Header />
+  <main data-home>
+    <Hero />
+    <StorySection />
+    <Experiences />
+    <EditorialSections />
+  </main>
+  <Footer />
+  <HomeMotion />
+</BaseLayout>

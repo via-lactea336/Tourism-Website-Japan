@@ -1,0 +1,88 @@
+---
+import { featuredDestinations } from "../data/site";
+---
+
+<section
+  id="top"
+  data-hero
+  class="relative isolate flex min-h-screen items-end overflow-hidden bg-ink px-4 pb-8 pt-28 sm:px-6 lg:px-8"
+>
+  <img
+    data-hero-image
+    class="absolute inset-0 -z-20 h-full w-full object-cover"
+    src="/img/jean-vella.webp"
+    alt="Mount Fuji seen beyond a Japanese town"
+    width="1600"
+    height="1000"
+    fetchpriority="high"
+  />
+  <div
+    data-hero-overlay
+    class="absolute inset-0 -z-10 bg-gradient-to-b from-black/20 via-black/45 to-black"
+  >
+  </div>
+  <div class="mx-auto grid w-full max-w-7xl gap-8">
+    <div class="max-w-4xl">
+      <p
+        data-hero-eyebrow
+        class="mb-3 text-sm font-extrabold uppercase tracking-[0.32em] text-white/75"
+      >
+        Travel guide
+      </p><div class="overflow-hidden [perspective:700px]">
+        <h1
+          data-hero-title
+          class="font-display text-7xl uppercase leading-none text-white sm:text-9xl lg:text-[13rem]"
+        >
+          Japan
+        </h1>
+      </div><p
+        data-hero-description
+        class="mt-4 max-w-2xl text-base leading-8 text-white/80 sm:text-lg"
+      >
+        Discover ancient capitals, vivid city nights, regional food and
+        folklore-led routes across Japan.
+      </p>
+    </div>
+    <ul
+      id="destinations"
+      class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 [perspective:800px]"
+    >
+      {
+        featuredDestinations.map((destination) => (
+          <li data-destination-card>
+            <a
+              class="group flex min-h-28 items-center gap-4 rounded-lg border border-white/10 bg-white/10 p-3 backdrop-blur transition hover:-translate-y-1 hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-offset-4"
+              href={`/destinos/${destination.slug}/`}
+            >
+              <>
+                <picture class="shrink-0 overflow-hidden rounded-md">
+                  <>
+                    <source srcset={destination.image} type="image/webp" />
+                    <img
+                      class="size-20 object-cover"
+                      src={destination.fallback}
+                      alt={destination.imageAlt}
+                      width="320"
+                      height="320"
+                      loading="lazy"
+                    />
+                  </>
+                </picture>
+                <span class="grid gap-1">
+                  <>
+                    <span class="text-sm font-medium text-white/70">
+                      {destination.tagline}
+                    </span>
+                    <span class="text-xl font-extrabold text-white">
+                      {destination.city}
+                    </span>
+                  </>
+                </span>
+              </>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

@@ -1,0 +1,272 @@
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+  let context: gsap.Context | undefined;
+
+  const initHomeMotion = () => {
+    context?.revert();
+    const home = document.querySelector<HTMLElement>("[data-home]");
+    if (!home || window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+      return;
+
+    context = gsap.context(() => {
+      const hero = home.querySelector<HTMLElement>("[data-hero]");
+      const header = document.querySelector<HTMLElement>("header");
+      if (!hero) return;
+      gsap
+        .timeline({ defaults: { ease: "power3.out" } })
+        .from(header, { y: -20, autoAlpha: 0, duration: 0.7 }, 0.1)
+        .from(
+          "[data-hero-image]",
+          { scale: 1.12, autoAlpha: 0.72, duration: 1.5, ease: "power2.out" },
+          0,
+        )
+        .from("[data-hero-overlay]", { autoAlpha: 0, duration: 1.1 }, 0.15)
+        .from(
+          "[data-hero-eyebrow]",
+          { x: -22, autoAlpha: 0, duration: 0.55 },
+          0.58,
+        )
+        .from(
+          "[data-hero-title]",
+          {
+            yPercent: 108,
+            rotateX: -24,
+            transformOrigin: "50% 100%",
+            duration: 0.9,
+          },
+          0.66,
+        )
+        .from(
+          "[data-hero-description]",
+          { y: 20, autoAlpha: 0, duration: 0.55 },
+          1.02,
+        )
+        .from(
+          "[data-destination-card]",
+          {
+            y: 34,
+            rotateX: 9,
+            autoAlpha: 0,
+            transformOrigin: "50% 100%",
+            stagger: 0.11,
+            duration: 0.62,
+          },
+          1.02,
+        );
+      gsap.to("[data-hero-image]", {
+        yPercent: 5,
+        ease: "none",
+        scrollTrigger: {
+          trigger: hero,
+          start: "top top",
+          end: "bottom top",
+          scrub: 0.65,
+        },
+      });
+      gsap.utils
+        .toArray<HTMLElement>("[data-story]")
+        .forEach((story, index) => {
+          const direction = index % 2 === 0 ? -1 : 1;
+          const media = story.querySelector("[data-story-media]");
+          const copy = story.querySelector("[data-story-copy]");
+          const progress = story.querySelector("[data-story-progress]");
+          gsap
+            .timeline({
+              scrollTrigger: { trigger: story, start: "top 76%", once: true },
+            })
+            .from(media, {
+              xPercent: 10 * direction,
+              clipPath:
+                direction < 0 ? "inset(0 0 0 100%)" : "inset(0 100% 0 0)",
+              duration: 0.85,
+              ease: "power3.out",
+            })
+            .from(
+              copy?.querySelectorAll(":scope > :not([data-story-cta])") ?? [],
+              {
+                x: -22 * direction,
+                autoAlpha: 0,
+                stagger: 0.1,
+                duration: 0.48,
+              },
+              "-=0.5",
+            );
+          gsap.fromTo(
+            progress,
+            { scaleY: 0 },
+            {
+              scaleY: 1,
+              ease: "none",
+              transformOrigin: "top",
+              scrollTrigger: {
+                trigger: story,
+                start: "top 76%",
+                end: "bottom 42%",
+                scrub: 0.45,
+              },
+            },
+          );
+          gsap.to(media, {
+            yPercent: -3,
+            ease: "none",
+            scrollTrigger: {
+              trigger: story,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 0.7,
+            },
+          });
+        });
+      gsap.utils
+        .toArray<HTMLElement>("[data-experience-card]")
+        .forEach((card, index) => {
+          const image = card.querySelector<HTMLImageElement>(
+            "[data-experience-image]",
+          );
+          const reveal = () => {
+            gsap.fromTo(
+              card,
+              { y: index === 0 ? 34 : 22, scale: 0.985 },
+              {
+                y: 0,
+                scale: 1,
+                duration: 0.7,
+                ease: "power3.out",
+                clearProps: "transform",
+              },
+            );
+            gsap.fromTo(
+              image,
+              { scale: 1.08 },
+              {
+                scale: 1,
+                duration: 1.05,
+                ease: "power2.out",
+                clearProps: "transform",
+              },
+            );
+          };
+          ScrollTrigger.create({
+            trigger: card,
+            start: "top 88%",
+            once: true,
+            onEnter: () => {
+              if (!image || (image.complete && image.naturalWidth > 0)) {
+                reveal();
+                return;
+              }
+              image.addEventListener("load", reveal, { once: true });
+            },
+          });
+          gsap.to(image, {
+            yPercent: -3,
+            ease: "none",
+            scrollTrigger: {
+              trigger: card,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 0.7,
+            },
+          });
+        });
+      gsap.from("[data-route-stop]", {
+        clipPath: "inset(0 0 100% 0)",
+        stagger: 0.12,
+        duration: 0.6,
+        scrollTrigger: {
+          trigger: "[data-route-section]",
+          start: "top 74%",
+          once: true,
+        },
+      });
+      gsap.fromTo(
+        "[data-route-line]",
+        { scaleX: 0 },
+        {
+          scaleX: 1,
+          transformOrigin: "left",
+          ease: "none",
+          scrollTrigger: {
+            trigger: "[data-route-section]",
+            start: "top 72%",
+            end: "bottom 58%",
+            scrub: 0.55,
+          },
+        },
+      );
+      gsap.utils
+        .toArray<HTMLElement>("[data-culture-note]")
+        .forEach((note, index) => {
+          const image = note.querySelector("[data-culture-image]");
+          gsap.from(image, {
+            clipPath: index ? "inset(0 0 0 100%)" : "inset(0 100% 0 0)",
+            duration: 0.85,
+            ease: "power3.out",
+            scrollTrigger: { trigger: note, start: "top 76%", once: true },
+          });
+        });
+      const seasons = gsap.matchMedia();
+      seasons.add("(min-width: 768px)", () => {
+        gsap.utils
+          .toArray<HTMLElement>("[data-season-panel]")
+          .forEach((panel) => {
+            panel.addEventListener("pointerenter", () =>
+              gsap.to(panel, {
+                flexGrow: 1.55,
+                duration: 0.55,
+                ease: "power3.out",
+              }),
+            );
+            panel.addEventListener("pointerleave", () =>
+              gsap.to(panel, {
+                flexGrow: 1,
+                duration: 0.55,
+                ease: "power3.out",
+              }),
+            );
+          });
+      });
+      gsap.from("[data-final-cta] > div", {
+        y: 42,
+        clipPath: "inset(0 0 100% 0)",
+        duration: 0.85,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: "[data-final-cta]",
+          start: "top 75%",
+          once: true,
+        },
+      });
+      const desktop = gsap.matchMedia();
+      desktop.add(
+        "(hover: hover) and (pointer: fine) and (min-width: 1024px)",
+        () => {
+          gsap.utils
+            .toArray<HTMLElement>("[data-destination-card]")
+            .forEach((card) => {
+              const image = card.querySelector<HTMLImageElement>("img");
+
+              if (!image) return;
+
+              const scaleImage = gsap.quickTo(image, "scale", {
+                duration: 0.4,
+                ease: "power3.out",
+              });
+
+              card.addEventListener("pointerenter", () => {
+                scaleImage(1.05);
+              });
+
+              card.addEventListener("pointerleave", () => {
+                scaleImage(1);
+              });
+            });
+        },
+      );
+    }, home);
+  };
+  document.addEventListener("astro:page-load", initHomeMotion);
+</script>

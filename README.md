@@ -1,24 +1,34 @@
-# 🎎 Japan Tourism Website
+# Japan Tourism Website
 
-Welcome to the Japan Tourism Website! 🌸🗾
+Responsive tourism landing page for Japan, rebuilt with Astro and Tailwind CSS.
 
-This project is a website dedicated to showcasing the beauty and wonders of Japan. It is built using HTML, Sass, and JavaScript.
+## Stack
 
+- Astro
+- Tailwind CSS 4
+- TypeScript
 
-## 🌟 Features
+## Project structure
 
-- Explore a wide range of captivating destinations in Japan.
-- Learn about the rich history and traditions of the country.
-- Discover unforgettable experiences and attractions.
-- Enjoy a responsive and user-friendly interface.
+```text
+src/
+  components/  Reusable UI sections
+  data/        Navigation, destinations and page content
+  layouts/     Shared document shell
+  pages/       Astro routes
+  styles/      Global Tailwind entry point
+public/img/    Static image assets
+```
 
-## 🛠️ Technologies Used
+## Commands
 
-- HTML
-- Sass (SCSS)
-- JavaScript
+```bash
+bun install
+bun run dev
+bun run build
+bun run preview
+```
 
-## ❌ Contributions
+## Notes
 
-Contributions are not accepted for this project at the moment. However, feel free to fork the repository and make it your own!
-
+The original static HTML/CSS/JavaScript has been split into Astro components, content data, semantic sections and responsive Tailwind utilities.

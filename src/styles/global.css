@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", "Montserrat", system-ui, sans-serif;
+  --font-display: "Rokkitt", Georgia, serif;
+  --color-ink: #070707;
+  --color-paper: #f7f1e8;
+  --color-vermilion: #ff3d00;
+  --color-matcha: #76885b;
+  --color-indigo-night: #141727;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: clip;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+  background: var(--color-ink);
+  color: white;
+  font-family: var(--font-sans);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.editorial-link-label,
+[data-culture-note] a {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 0.55rem;
+}
+
+.editorial-link {
+  align-items: baseline !important;
+}
+
+[data-culture-note] a {
+  border: 0 !important;
+}
+
+.editorial-link-line,
+[data-culture-note] a::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  content: "";
+  background: var(--color-vermilion);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 320ms cubic-bezier(.22, 1, .36, 1);
+}
+
+.editorial-link:hover .editorial-link-line,
+.editorial-link:focus-visible .editorial-link-line,
+[data-culture-note] a:hover::after,
+[data-culture-note] a:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
