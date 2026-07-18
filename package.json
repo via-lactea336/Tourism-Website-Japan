@@ -10,7 +10,8 @@
     "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview",
     "astro": "astro",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "images:optimize": "bun scripts/optimize-images.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
@@ -22,6 +23,7 @@
   },
   "devDependencies": {
     "prettier": "^3.9.5",
-    "prettier-plugin-astro": "^0.14.1"
+    "prettier-plugin-astro": "^0.14.1",
+    "sharp": "^0.35.3"
   }
 }

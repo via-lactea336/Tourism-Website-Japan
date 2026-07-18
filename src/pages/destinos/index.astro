@@ -7,16 +7,16 @@ import { destinations as baseDestinations } from "../../data/site";
 
 const internalImages = {
   tokyo: {
-    src: "/img/destinations/tokyo-shinjuku.jpg",
+    src: "/img/destinations/tokyo-shinjuku.webp",
     alt: "Night skyline of Shinjuku seen from Shibuya in Tokyo",
   },
   kyoto: {
-    src: "/img/destinations/kyoto-temple.jpg",
+    src: "/img/destinations/kyoto-temple.webp",
     alt: "Historic Kyoto temple and street in blue-hour light",
   },
-  osaka: { src: "/img/destinations/osaka-skyline.jpg", alt: "Osaka skyline illuminated at night" },
+  osaka: { src: "/img/destinations/osaka-skyline.webp", alt: "Osaka skyline illuminated at night" },
   nara: {
-    src: "/img/destinations/nara-deer.jpg",
+    src: "/img/destinations/nara-deer.webp",
     alt: "Young deer standing beside stone lanterns in Nara",
   },
 } as const;
@@ -53,7 +53,7 @@ const jsonLd = {
     >
       <img
         data-destination-hero-media
-        src="/img/destinations/index-fuji.jpg"
+        src="/img/destinations/index-fuji.webp"
         alt="Mount Fuji above Kawaguchiko town"
         width="1600"
         height="1000"
@@ -110,7 +110,7 @@ const jsonLd = {
               <article
                 data-index-destination
                 class:list={[
-                  "grid items-center gap-8 lg:grid-cols-[1.15fr_.85fr] lg:gap-16",
+                  "grid items-center gap-8 lg:grid-cols-2 lg:gap-16",
                   index % 2 ? "lg:[&>*:first-child]:order-2" : "",
                 ]}
               >

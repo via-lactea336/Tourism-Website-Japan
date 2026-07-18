@@ -5,8 +5,11 @@
   gsap.registerPlugin(ScrollTrigger);
   let context: gsap.Context | undefined;
   let activeHome: HTMLElement | undefined;
+  let homeObserver: MutationObserver | undefined;
 
   const cleanHomeMotion = () => {
+    homeObserver?.disconnect();
+    homeObserver = undefined;
     context?.revert();
     context = undefined;
     activeHome = undefined;
@@ -253,6 +256,28 @@
       });
     }, home);
   };
+  const scheduleHomeMotion = () => {
+    if (document.querySelector("[data-home]")) {
+      homeObserver?.disconnect();
+      homeObserver = undefined;
+      initHomeMotion();
+      return;
+    }
+
+    homeObserver?.disconnect();
+    homeObserver = new MutationObserver(() => {
+      if (!document.querySelector("[data-home]")) return;
+
+      homeObserver?.disconnect();
+      homeObserver = undefined;
+      initHomeMotion();
+    });
+    homeObserver.observe(document.documentElement, { childList: true, subtree: true });
+  };
+
+  // Astro can evaluate component scripts before `<main data-home>` exists.
+  // Watch for that mount on direct loads; `activeHome` keeps router events idempotent.
+  scheduleHomeMotion();
   document.addEventListener("astro:before-swap", cleanHomeMotion);
-  document.addEventListener("astro:page-load", initHomeMotion);
+  document.addEventListener("astro:page-load", scheduleHomeMotion);
 </script>
