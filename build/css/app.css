@@ -134,7 +134,7 @@ ul {
   justify-content: center;
   align-items: center;
   background: #f1f1f1;
-  color: #FF3D00;
+  color: #ff3d00;
   border-radius: 1rem;
   width: 100%;
 }
@@ -175,17 +175,17 @@ ul {
 .btn {
   display: none;
   text-align: center;
-  background-color: #FF3D00;
+  background-color: #ff3d00;
   border-radius: 2rem;
   width: 10rem;
   height: 3rem;
-  box-shadow: 0 0.1rem 1.5rem 0 #FF3D00;
+  box-shadow: 0 0.1rem 1.5rem 0 #ff3d00;
   margin-right: 2rem;
 }
 .btn:hover {
   color: #fff;
   scale: 1.05;
-  box-shadow: 0 0.4rem 2.5rem 0 #FF3D00;
+  box-shadow: 0 0.4rem 2.5rem 0 #ff3d00;
 }
 
 /* Estilos para mostrar las opciones del menú */
@@ -244,7 +244,8 @@ ul {
   font-size: 10rem;
   color: #fff;
   text-transform: uppercase;
-  font-family: "Rokkitt", "Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  font-family:
+    "Rokkitt", "Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 }
 
 @media (min-width: 768px) {
@@ -355,11 +356,11 @@ ul {
   font-size: 2rem;
 }
 .city_info .cities a:focus {
-  color: #FF3D00;
+  color: #ff3d00;
 }
 .city_info .cities a:hover {
   cursor: pointer;
-  color: #FF3D00;
+  color: #ff3d00;
 }
 
 @media (min-width: 768px) {
@@ -376,7 +377,7 @@ ul {
   }
   .scroll .position {
     max-width: 40rem;
-    background-color: #FF3D00;
+    background-color: #ff3d00;
     border-radius: 1.4rem;
   }
   .scroll p {
@@ -396,7 +397,7 @@ ul {
   width: 10rem;
 }
 .tokyo .go_tokyo {
-  color: #FF3D00;
+  color: #ff3d00;
 }
 
 .kyoto .position {
@@ -404,7 +405,7 @@ ul {
   width: 20rem;
 }
 .kyoto .go_kyoto {
-  color: #FF3D00;
+  color: #ff3d00;
 }
 
 .osaka .position {
@@ -412,7 +413,7 @@ ul {
   width: 30rem;
 }
 .osaka .go_osaka {
-  color: #FF3D00;
+  color: #ff3d00;
 }
 
 .nara .position {
@@ -420,7 +421,7 @@ ul {
   width: 40rem;
 }
 .nara .go_nara {
-  color: #FF3D00;
+  color: #ff3d00;
 }
 
 @media (min-width: 992px) {

@@ -39,14 +39,11 @@ import { featuredDestinations } from "../data/site";
         data-hero-description
         class="mt-4 max-w-2xl text-base leading-8 text-white/80 sm:text-lg"
       >
-        Discover ancient capitals, vivid city nights, regional food and
-        folklore-led routes across Japan.
+        Discover ancient capitals, vivid city nights, regional food and folklore-led routes across
+        Japan.
       </p>
     </div>
-    <ul
-      id="destinations"
-      class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 [perspective:800px]"
-    >
+    <ul id="destinations" class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 [perspective:800px]">
       {
         featuredDestinations.map((destination) => (
           <li data-destination-card>
@@ -70,12 +67,8 @@ import { featuredDestinations } from "../data/site";
                 </picture>
                 <span class="grid gap-1">
                   <>
-                    <span class="text-sm font-medium text-white/70">
-                      {destination.tagline}
-                    </span>
-                    <span class="text-xl font-extrabold text-white">
-                      {destination.city}
-                    </span>
+                    <span class="text-sm font-medium text-white/70">{destination.tagline}</span>
+                    <span class="text-xl font-extrabold text-white">{destination.city}</span>
                   </>
                 </span>
               </>

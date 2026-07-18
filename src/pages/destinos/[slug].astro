@@ -7,39 +7,289 @@ import Header from "../../components/Header.astro";
 import { destinations as baseDestinations } from "../../data/site";
 
 const internalImages = {
-  tokyo: { src: "/img/destinations/tokyo-shinjuku.jpg", alt: "Night skyline of Shinjuku seen from Shibuya in Tokyo" },
-  kyoto: { src: "/img/destinations/kyoto-temple.jpg", alt: "Historic Kyoto temple and street in blue-hour light" },
+  tokyo: {
+    src: "/img/destinations/tokyo-shinjuku.jpg",
+    alt: "Night skyline of Shinjuku seen from Shibuya in Tokyo",
+  },
+  kyoto: {
+    src: "/img/destinations/kyoto-temple.jpg",
+    alt: "Historic Kyoto temple and street in blue-hour light",
+  },
   osaka: { src: "/img/destinations/osaka-skyline.jpg", alt: "Osaka skyline illuminated at night" },
-  nara: { src: "/img/destinations/nara-deer.jpg", alt: "Young deer standing beside stone lanterns in Nara" },
+  nara: {
+    src: "/img/destinations/nara-deer.jpg",
+    alt: "Young deer standing beside stone lanterns in Nara",
+  },
 } as const;
-const destinations = baseDestinations.map((destination) => ({ ...destination, image: internalImages[destination.slug as keyof typeof internalImages].src, storyImage: internalImages[destination.slug as keyof typeof internalImages].src, imageAlt: internalImages[destination.slug as keyof typeof internalImages].alt }));
+const destinations = baseDestinations.map((destination) => ({
+  ...destination,
+  image: internalImages[destination.slug as keyof typeof internalImages].src,
+  storyImage: internalImages[destination.slug as keyof typeof internalImages].src,
+  imageAlt: internalImages[destination.slug as keyof typeof internalImages].alt,
+}));
 
-export const getStaticPaths = (() => baseDestinations.map((destination) => ({ params: { slug: destination.slug }, props: { destination } }))) satisfies GetStaticPaths;
+export const getStaticPaths = (() =>
+  baseDestinations.map((destination) => ({
+    params: { slug: destination.slug },
+    props: { destination },
+  }))) satisfies GetStaticPaths;
 const sourceDestination = Astro.props.destination;
-const destination = { ...sourceDestination, image: internalImages[sourceDestination.slug as keyof typeof internalImages].src, storyImage: internalImages[sourceDestination.slug as keyof typeof internalImages].src, imageAlt: internalImages[sourceDestination.slug as keyof typeof internalImages].alt };
+const destination = {
+  ...sourceDestination,
+  image: internalImages[sourceDestination.slug as keyof typeof internalImages].src,
+  storyImage: internalImages[sourceDestination.slug as keyof typeof internalImages].src,
+  imageAlt: internalImages[sourceDestination.slug as keyof typeof internalImages].alt,
+};
 const related = destinations.filter((item) => item.slug !== destination.slug).slice(0, 3);
-const jsonLd = { "@context": "https://schema.org", "@type": "TouristDestination", name: destination.city, description: destination.metaDescription, containedInPlace: { "@type": "AdministrativeArea", name: destination.prefecture }, url: Astro.url.href };
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "TouristDestination",
+  name: destination.city,
+  description: destination.metaDescription,
+  containedInPlace: { "@type": "AdministrativeArea", name: destination.prefecture },
+  url: Astro.url.href,
+};
 ---
 
 <BaseLayout title={destination.metaTitle} description={destination.metaDescription} jsonLd={jsonLd}>
   <Header />
   <main data-destination-page>
-    <section data-destination-hero class="relative isolate overflow-hidden bg-ink px-4 pb-20 pt-32 sm:px-6 lg:px-8">
-      <img data-destination-hero-media transition:name={`destination-image-${destination.slug}`} src={destination.storyImage} alt={destination.imageAlt} width="1600" height="1000" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover opacity-55" />
+    <section
+      data-destination-hero
+      class="relative isolate overflow-hidden bg-ink px-4 pb-20 pt-32 sm:px-6 lg:px-8"
+    >
+      <img
+        data-destination-hero-media
+        transition:name={`destination-image-${destination.slug}`}
+        src={destination.storyImage}
+        alt={destination.imageAlt}
+        width="1600"
+        height="1000"
+        fetchpriority="high"
+        class="absolute inset-0 -z-20 h-full w-full object-cover opacity-55"
+      />
       <div class="absolute inset-0 -z-10 bg-linear-to-r from-black via-black/70 to-black/15"></div>
-      <div class="mx-auto max-w-7xl"><nav aria-label="Breadcrumb" class="text-sm text-white/65"><a class="hover:text-white" href="/">Home</a><span aria-hidden="true"> / </span><a class="hover:text-white" href="/destinos/">Destinations</a><span aria-hidden="true"> / </span><span>{destination.city}</span></nav><div class="mt-20 grid gap-10 lg:grid-cols-[1.2fr_.8fr]"><div><p data-destination-eyebrow class="text-sm font-extrabold uppercase tracking-[.32em] text-vermilion">{destination.prefecture} — 0{destinations.findIndex((item) => item.slug === destination.slug) + 1}</p><div class="mt-4 overflow-hidden"><h1 data-destination-title transition:name={`destination-title-${destination.slug}`} class="font-display text-8xl uppercase leading-[.78] sm:text-[10rem] lg:text-[13rem]">{destination.city}</h1></div></div><div class="self-end border-l border-white/25 pl-6 sm:pl-8"><p class="font-display text-4xl leading-none text-white/90">{destination.tagline}</p><p data-destination-intro class="mt-6 max-w-lg text-lg leading-8 text-white/80">{destination.description}</p><a href="#guide" class="editorial-link mt-8 inline-flex items-baseline gap-3 text-sm font-bold"><span class="editorial-link-label">Read the guide<span class="editorial-link-line" aria-hidden="true"></span></span><span aria-hidden="true">↓</span></a></div></div></div>
+      <div class="mx-auto max-w-7xl">
+        <nav aria-label="Breadcrumb" class="text-sm text-white/65">
+          <a class="hover:text-white" href="/">Home</a><span aria-hidden="true"> / </span><a
+            class="hover:text-white"
+            href="/destinos/">Destinations</a
+          ><span aria-hidden="true"> / </span><span>{destination.city}</span>
+        </nav><div class="mt-20 grid gap-10 lg:grid-cols-[1.2fr_.8fr]">
+          <div>
+            <p
+              data-destination-eyebrow
+              class="text-sm font-extrabold uppercase tracking-[.32em] text-vermilion"
+            >
+              {destination.prefecture} — 0{
+                destinations.findIndex((item) => item.slug === destination.slug) + 1
+              }
+            </p><div class="mt-4 overflow-hidden">
+              <h1
+                data-destination-title
+                transition:name={`destination-title-${destination.slug}`}
+                class="font-display text-8xl uppercase leading-[.78] sm:text-[10rem] lg:text-[13rem]"
+              >
+                {destination.city}
+              </h1>
+            </div>
+          </div><div class="self-end border-l border-white/25 pl-6 sm:pl-8">
+            <p class="font-display text-4xl leading-none text-white/90">{destination.tagline}</p><p
+              data-destination-intro
+              class="mt-6 max-w-lg text-lg leading-8 text-white/80"
+            >
+              {destination.description}
+            </p><a
+              href="#guide"
+              class="editorial-link mt-8 inline-flex items-baseline gap-3 text-sm font-bold"
+              ><span class="editorial-link-label"
+                >Read the guide<span class="editorial-link-line" aria-hidden="true"></span></span
+              ><span aria-hidden="true">↓</span></a
+            >
+          </div>
+        </div>
+      </div>
     </section>
 
     <article id="guide" class="bg-paper text-ink">
-      <section data-destination-chapter class="mx-auto grid max-w-7xl gap-10 px-4 py-20 sm:px-6 sm:py-28 lg:grid-cols-[.9fr_1.1fr] lg:gap-16 lg:px-8"><div data-chapter-copy class="self-center"><p class="text-sm font-extrabold uppercase tracking-[.3em] text-vermilion">01 — Introduction</p><h2 class="mt-4 text-5xl font-extrabold leading-none sm:text-7xl">The character of the place.</h2><p class="mt-7 max-w-xl text-lg leading-8 text-ink/75">{destination.introduction}</p><div class="mt-10 border-t border-ink/20 pt-5"><span class="text-xs font-bold uppercase tracking-[.22em] text-vermilion">Suggested pace</span><p class="mt-2 max-w-lg leading-7 text-ink/70">{destination.visitLength}</p></div></div><div data-chapter-media class="overflow-hidden rounded-lg"><img src={destination.image} alt={destination.imageAlt} width="1200" height="900" loading="lazy" class="aspect-[4/3] w-full object-cover" /></div></section>
+      <section
+        data-destination-chapter
+        class="mx-auto grid max-w-7xl gap-10 px-4 py-20 sm:px-6 sm:py-28 lg:grid-cols-[.9fr_1.1fr] lg:gap-16 lg:px-8"
+      >
+        <div data-chapter-copy class="self-center">
+          <p class="text-sm font-extrabold uppercase tracking-[.3em] text-vermilion">
+            01 — Introduction
+          </p><h2 class="mt-4 text-5xl font-extrabold leading-none sm:text-7xl">
+            The character of the place.
+          </h2><p class="mt-7 max-w-xl text-lg leading-8 text-ink/75">
+            {destination.introduction}
+          </p><div class="mt-10 border-t border-ink/20 pt-5">
+            <span class="text-xs font-bold uppercase tracking-[.22em] text-vermilion"
+              >Suggested pace</span
+            ><p class="mt-2 max-w-lg leading-7 text-ink/70">{destination.visitLength}</p>
+          </div>
+        </div><div data-chapter-media class="overflow-hidden rounded-lg">
+          <img
+            src={destination.image}
+            alt={destination.imageAlt}
+            width="1200"
+            height="900"
+            loading="lazy"
+            class="aspect-[4/3] w-full object-cover"
+          />
+        </div>
+      </section>
 
-      <section data-destination-chapter class="bg-ink px-4 py-20 text-white sm:px-6 sm:py-28 lg:px-8"><div class="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1.1fr_.9fr] lg:gap-16"><div data-chapter-media class="overflow-hidden rounded-lg"><img src={destination.storyImage} alt={destination.imageAlt} width="1200" height="900" loading="lazy" class="aspect-[4/3] w-full object-cover opacity-85" /></div><div data-chapter-copy class="self-center"><p class="text-sm font-extrabold uppercase tracking-[.3em] text-vermilion">02 — Context</p><h2 class="mt-4 text-5xl font-extrabold leading-none sm:text-7xl">A living backdrop.</h2><p class="mt-7 max-w-xl text-lg leading-8 text-white/75">{destination.culture}</p></div></div></section>
+      <section
+        data-destination-chapter
+        class="bg-ink px-4 py-20 text-white sm:px-6 sm:py-28 lg:px-8"
+      >
+        <div class="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1.1fr_.9fr] lg:gap-16">
+          <div data-chapter-media class="overflow-hidden rounded-lg">
+            <img
+              src={destination.storyImage}
+              alt={destination.imageAlt}
+              width="1200"
+              height="900"
+              loading="lazy"
+              class="aspect-[4/3] w-full object-cover opacity-85"
+            />
+          </div><div data-chapter-copy class="self-center">
+            <p class="text-sm font-extrabold uppercase tracking-[.3em] text-vermilion">
+              02 — Context
+            </p><h2 class="mt-4 text-5xl font-extrabold leading-none sm:text-7xl">
+              A living backdrop.
+            </h2><p class="mt-7 max-w-xl text-lg leading-8 text-white/75">{destination.culture}</p>
+          </div>
+        </div>
+      </section>
 
-      <section data-destination-chapter class="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8"><div data-chapter-copy class="max-w-3xl"><p class="text-sm font-extrabold uppercase tracking-[.3em] text-vermilion">03 — What to explore</p><h2 class="mt-4 text-5xl font-extrabold leading-none sm:text-7xl">Build the day in chapters.</h2></div><ol class="mt-12 divide-y divide-ink/20">{destination.experiences.map((experience, index) => <li class="grid gap-4 py-7 sm:grid-cols-[5rem_1fr] sm:gap-8"><span class="font-display text-5xl text-vermilion/75">0{index + 1}</span><p class="max-w-2xl text-2xl font-extrabold leading-tight">{experience}</p></li>)}</ol></section>
+      <section
+        data-destination-chapter
+        class="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8"
+      >
+        <div data-chapter-copy class="max-w-3xl">
+          <p class="text-sm font-extrabold uppercase tracking-[.3em] text-vermilion">
+            03 — What to explore
+          </p><h2 class="mt-4 text-5xl font-extrabold leading-none sm:text-7xl">
+            Build the day in chapters.
+          </h2>
+        </div><ol class="mt-12 divide-y divide-ink/20">
+          {
+            destination.experiences.map((experience, index) => (
+              <li class="grid gap-4 py-7 sm:grid-cols-[5rem_1fr] sm:gap-8">
+                <>
+                  <span class="font-display text-5xl text-vermilion/75">0{index + 1}</span>
+                  <p class="max-w-2xl text-2xl font-extrabold leading-tight">{experience}</p>
+                </>
+              </li>
+            ))
+          }
+        </ol>
+      </section>
 
-      <section data-dossier class="bg-paper px-4 pb-20 sm:px-6 sm:pb-28 lg:px-8"><div class="mx-auto max-w-7xl border-y border-ink/20"><div class="grid gap-8 py-10 lg:grid-cols-[.8fr_1.2fr]"><div><p class="text-sm font-extrabold uppercase tracking-[.3em] text-vermilion">04 — Travel dossier</p><h2 class="mt-4 text-5xl font-extrabold leading-none sm:text-7xl">Plan with the latest details.</h2><p class="mt-6 max-w-md leading-8 text-ink/70">Conditions can change. Use the official sources at the end of this guide to confirm the details that matter to you.</p></div><dl class="divide-y divide-ink/20">{destination.practical.map((fact) => <div data-dossier-row class="grid gap-2 py-6 sm:grid-cols-[10rem_1fr]"><dt class="text-xs font-bold uppercase tracking-[.2em] text-vermilion">{fact.label}</dt><dd class="leading-7 text-ink/75">{fact.text}</dd></div>)}<div data-dossier-row class="grid gap-2 py-6 sm:grid-cols-[10rem_1fr]"><dt class="text-xs font-bold uppercase tracking-[.2em] text-vermilion">Best time</dt><dd class="leading-7 text-ink/75">{destination.bestTime}</dd></div></dl></div></div></section>
+      <section data-dossier class="bg-paper px-4 pb-20 sm:px-6 sm:pb-28 lg:px-8">
+        <div class="mx-auto max-w-7xl border-y border-ink/20">
+          <div class="grid gap-8 py-10 lg:grid-cols-[.8fr_1.2fr]">
+            <div>
+              <p class="text-sm font-extrabold uppercase tracking-[.3em] text-vermilion">
+                04 — Travel dossier
+              </p><h2 class="mt-4 text-5xl font-extrabold leading-none sm:text-7xl">
+                Plan with the latest details.
+              </h2><p class="mt-6 max-w-md leading-8 text-ink/70">
+                Conditions can change. Use the official sources at the end of this guide to confirm
+                the details that matter to you.
+              </p>
+            </div><dl class="divide-y divide-ink/20">
+              {
+                destination.practical.map((fact) => (
+                  <div data-dossier-row class="grid gap-2 py-6 sm:grid-cols-[10rem_1fr]">
+                    <>
+                      <dt class="text-xs font-bold uppercase tracking-[.2em] text-vermilion">
+                        {fact.label}
+                      </dt>
+                      <dd class="leading-7 text-ink/75">{fact.text}</dd>
+                    </>
+                  </div>
+                ))
+              }<div data-dossier-row class="grid gap-2 py-6 sm:grid-cols-[10rem_1fr]">
+                <dt class="text-xs font-bold uppercase tracking-[.2em] text-vermilion">
+                  Best time
+                </dt><dd class="leading-7 text-ink/75">{destination.bestTime}</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </section>
 
-      <section class="bg-indigo-night px-4 py-20 text-white sm:px-6 sm:py-28 lg:px-8"><div class="mx-auto max-w-7xl"><div class="flex flex-wrap items-end justify-between gap-6"><div><p class="text-sm font-extrabold uppercase tracking-[.3em] text-vermilion">Continue the route</p><h2 class="mt-4 text-5xl font-extrabold leading-none sm:text-7xl">Other rhythms to follow.</h2></div><a class="editorial-link inline-flex items-baseline gap-3 text-sm font-bold" href="/destinos/"><span class="editorial-link-label">All destinations<span class="editorial-link-line" aria-hidden="true"></span></span><span aria-hidden="true">→</span></a></div><div class="mt-12 grid gap-4 md:grid-cols-3">{related.map((item, index) => <a href={`/destinos/${item.slug}/`} class="group overflow-hidden rounded-lg border border-white/15" transition:name={`related-${destination.slug}-${item.slug}`}><img src={item.image} alt={item.imageAlt} width="640" height="480" loading="lazy" class="aspect-[4/3] w-full object-cover opacity-75 transition duration-700 group-hover:scale-105" /><span class="block p-5"><span class="text-xs font-bold uppercase tracking-[.2em] text-vermilion">0{index + 1} — {item.prefecture}</span><span class="mt-2 block text-3xl font-extrabold">{item.city}</span><span class="mt-3 block text-white/65">{item.tagline}</span></span></a>)}</div><div class="mt-16 border-t border-white/20 pt-7"><p class="text-xs font-bold uppercase tracking-[.2em] text-white/55">Official sources</p><ul class="mt-4 flex flex-wrap gap-x-7 gap-y-3">{destination.sources.map((source) => <li><a href={source.url} target="_blank" rel="noreferrer" class="text-sm font-bold text-vermilion underline underline-offset-4 hover:text-white">{source.label}</a></li>)}</ul></div></div></section>
+      <section class="bg-indigo-night px-4 py-20 text-white sm:px-6 sm:py-28 lg:px-8">
+        <div class="mx-auto max-w-7xl">
+          <div class="flex flex-wrap items-end justify-between gap-6">
+            <div>
+              <p class="text-sm font-extrabold uppercase tracking-[.3em] text-vermilion">
+                Continue the route
+              </p><h2 class="mt-4 text-5xl font-extrabold leading-none sm:text-7xl">
+                Other rhythms to follow.
+              </h2>
+            </div><a
+              class="editorial-link inline-flex items-baseline gap-3 text-sm font-bold"
+              href="/destinos/"
+              ><span class="editorial-link-label"
+                >All destinations<span class="editorial-link-line" aria-hidden="true"></span></span
+              ><span aria-hidden="true">→</span></a
+            >
+          </div><div class="mt-12 grid gap-4 md:grid-cols-3">
+            {
+              related.map((item, index) => (
+                <a
+                  href={`/destinos/${item.slug}/`}
+                  class="group overflow-hidden rounded-lg border border-white/15"
+                  transition:name={`related-${destination.slug}-${item.slug}`}
+                >
+                  <>
+                    <img
+                      src={item.image}
+                      alt={item.imageAlt}
+                      width="640"
+                      height="480"
+                      loading="lazy"
+                      class="aspect-[4/3] w-full object-cover opacity-75 transition duration-700 group-hover:scale-105"
+                    />
+                    <span class="block p-5">
+                      <>
+                        <span class="text-xs font-bold uppercase tracking-[.2em] text-vermilion">
+                          0{index + 1} — {item.prefecture}
+                        </span>
+                        <span class="mt-2 block text-3xl font-extrabold">{item.city}</span>
+                        <span class="mt-3 block text-white/65">{item.tagline}</span>
+                      </>
+                    </span>
+                  </>
+                </a>
+              ))
+            }
+          </div><div class="mt-16 border-t border-white/20 pt-7">
+            <p class="text-xs font-bold uppercase tracking-[.2em] text-white/55">
+              Official sources
+            </p><ul class="mt-4 flex flex-wrap gap-x-7 gap-y-3">
+              {
+                destination.sources.map((source) => (
+                  <li>
+                    <a
+                      href={source.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      class="text-sm font-bold text-vermilion underline underline-offset-4 hover:text-white"
+                    >
+                      {source.label}
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
+      </section>
     </article>
   </main>
   <Footer />

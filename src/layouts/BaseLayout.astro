@@ -27,9 +27,12 @@ const { title, description, canonical = Astro.url.href, jsonLd } = Astro.props;
     <link rel="icon" href="/img/japan.png" type="image/png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Rokkitt:wght@700&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Rokkitt:wght@700&display=swap"
+      rel="stylesheet"
+    />
     <title>{title}</title>
-    {jsonLd && <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)}></script>}
+    {jsonLd && <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
   </head>
   <body class="min-h-screen bg-ink text-white antialiased">
     <ClientRouter />

@@ -2,21 +2,146 @@
 import { destinations, experiences } from "../data/site";
 
 const experienceVisuals = [
-  { src: "/img/experiences/tea-food-culture.png", alt: "A hand pouring tea into handmade ceramic cups beside small dishes", width: 1024, height: 1536 },
-  { src: "/img/experiences/temples-shrines.png", alt: "A lantern-lit shrine approach at blue hour", width: 1536, height: 1024 },
-  { src: "/img/experiences/urban-nights.png", alt: "A rain-slicked Japanese city street at night", width: 1536, height: 1024 },
-  { src: "/img/experiences/gardens-parks.png", alt: "A mossy Japanese garden with pond and pines", width: 1536, height: 1024 },
-  { src: "/img/experiences/craft-design.png", alt: "A ceramic artist shaping a vessel in a workshop", width: 1536, height: 1024 },
-  { src: "/img/experiences/historic-walking-routes.png", alt: "A historic Japanese lane lit by lanterns at dusk", width: 1536, height: 1024 },
+  {
+    src: "/img/experiences/tea-food-culture.png",
+    alt: "A hand pouring tea into handmade ceramic cups beside small dishes",
+    width: 1024,
+    height: 1536,
+  },
+  {
+    src: "/img/experiences/temples-shrines.png",
+    alt: "A lantern-lit shrine approach at blue hour",
+    width: 1536,
+    height: 1024,
+  },
+  {
+    src: "/img/experiences/urban-nights.png",
+    alt: "A rain-slicked Japanese city street at night",
+    width: 1536,
+    height: 1024,
+  },
+  {
+    src: "/img/experiences/gardens-parks.png",
+    alt: "A mossy Japanese garden with pond and pines",
+    width: 1536,
+    height: 1024,
+  },
+  {
+    src: "/img/experiences/craft-design.png",
+    alt: "A ceramic artist shaping a vessel in a workshop",
+    width: 1536,
+    height: 1024,
+  },
+  {
+    src: "/img/experiences/historic-walking-routes.png",
+    alt: "A historic Japanese lane lit by lanterns at dusk",
+    width: 1536,
+    height: 1024,
+  },
 ];
 
-const editorialExperiences = experiences.map((title, index) => ({ title, number: String(index + 1).padStart(2, "0"), destination: destinations[index % destinations.length], visual: experienceVisuals[index] }));
+const editorialExperiences = experiences.map((title, index) => ({
+  title,
+  number: String(index + 1).padStart(2, "0"),
+  destination: destinations[index % destinations.length],
+  visual: experienceVisuals[index],
+}));
 ---
-<section id="experiences" data-home-experiences class="overflow-hidden bg-paper py-24 text-ink sm:py-32">
+
+<section
+  id="experiences"
+  data-home-experiences
+  class="overflow-hidden bg-paper py-24 text-ink sm:py-32"
+>
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="grid gap-10 border-b border-ink/20 pb-10 lg:grid-cols-[.8fr_1.2fr] lg:pb-16"><div><p class="text-sm font-extrabold uppercase tracking-[.32em] text-vermilion">Experiences</p><h2 class="mt-4 max-w-md text-5xl font-extrabold leading-[.92] sm:text-7xl">Plan a richer route through Japan.</h2></div><div class="self-end lg:pb-2"><p class="max-w-xl text-lg leading-8 text-ink/70">A collection of cultural entry points, designed to be combined with the places already in your route.</p><p class="mt-6 text-xs font-bold uppercase tracking-[.25em] text-ink/55">Scroll to explore — 01 / 06</p></div></div>
+    <div class="grid gap-10 border-b border-ink/20 pb-10 lg:grid-cols-[.8fr_1.2fr] lg:pb-16">
+      <div>
+        <p class="text-sm font-extrabold uppercase tracking-[.32em] text-vermilion">
+          Experiences
+        </p><h2 class="mt-4 max-w-md text-5xl font-extrabold leading-[.92] sm:text-7xl">
+          Plan a richer route through Japan.
+        </h2>
+      </div><div class="self-end lg:pb-2">
+        <p class="max-w-xl text-lg leading-8 text-ink/70">
+          A collection of cultural entry points, designed to be combined with the places already in
+          your route.
+        </p><p class="mt-6 text-xs font-bold uppercase tracking-[.25em] text-ink/55">
+          Scroll to explore — 01 / 06
+        </p>
+      </div>
+    </div>
     <div class="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-12 lg:gap-6">
-      {editorialExperiences.map((experience, index) => <article data-experience-card class:list={["group relative isolate min-h-80 overflow-hidden rounded-lg bg-ink text-white", index === 0 ? "md:col-span-2 lg:col-span-7 lg:row-span-2 lg:min-h-150" : "lg:col-span-5", index === 3 ? "lg:col-span-6 lg:col-start-1" : "", index === 4 ? "lg:col-span-6" : "", index === 5 ? "md:col-span-2 lg:col-span-12" : ""]}><img data-experience-image src={experience.visual.src} alt={experience.visual.alt} width={experience.visual.width} height={experience.visual.height} loading="lazy" class="absolute inset-0 -z-20 h-full w-full object-cover opacity-70 transition duration-700 group-hover:scale-105" /><div class="absolute inset-0 -z-10 bg-linear-to-t from-black via-black/45 to-black/10"></div><div class="flex h-full min-h-80 flex-col justify-between p-6 sm:p-8"><div class="flex items-start justify-between"><span class="font-display text-5xl text-white/75">{experience.number}</span><span class="border border-white/30 px-3 py-1 text-[.65rem] font-bold uppercase tracking-[.2em]">Route note</span></div><div><p class="text-sm font-bold uppercase tracking-[.24em] text-vermilion">{experience.destination.city}</p><h3 class:list={["mt-3 font-extrabold leading-none", index === 0 ? "text-4xl sm:text-6xl" : "text-3xl"]}>{experience.title}</h3><p class="mt-4 max-w-md text-sm leading-6 text-white/75">A considered way to connect place, culture and your own pace of travel.</p><a class="editorial-link mt-5 inline-flex items-center gap-3 text-sm font-bold" href={`/destinos/${experience.destination.slug}/`}><span class="editorial-link-label">Explore destination<span class="editorial-link-line" aria-hidden="true"></span></span><span aria-hidden="true">→</span></a></div></div></article>)}
+      {
+        editorialExperiences.map((experience, index) => (
+          <article
+            data-experience-card
+            class:list={[
+              "group relative isolate min-h-80 overflow-hidden rounded-lg bg-ink text-white",
+              index === 0
+                ? "md:col-span-2 lg:col-span-7 lg:row-span-2 lg:min-h-150"
+                : "lg:col-span-5",
+              index === 3 ? "lg:col-span-6 lg:col-start-1" : "",
+              index === 4 ? "lg:col-span-6" : "",
+              index === 5 ? "md:col-span-2 lg:col-span-12" : "",
+            ]}
+          >
+            <>
+              <img
+                data-experience-image
+                src={experience.visual.src}
+                alt={experience.visual.alt}
+                width={experience.visual.width}
+                height={experience.visual.height}
+                loading="lazy"
+                class="absolute inset-0 -z-20 h-full w-full object-cover opacity-70 transition duration-700 group-hover:scale-105"
+              />
+              <div class="absolute inset-0 -z-10 bg-linear-to-t from-black via-black/45 to-black/10" />
+              <div class="flex h-full min-h-80 flex-col justify-between p-6 sm:p-8">
+                <>
+                  <div class="flex items-start justify-between">
+                    <>
+                      <span class="font-display text-5xl text-white/75">{experience.number}</span>
+                      <span class="border border-white/30 px-3 py-1 text-[.65rem] font-bold uppercase tracking-[.2em]">
+                        Route note
+                      </span>
+                    </>
+                  </div>
+                  <div>
+                    <>
+                      <p class="text-sm font-bold uppercase tracking-[.24em] text-vermilion">
+                        {experience.destination.city}
+                      </p>
+                      <h3
+                        class:list={[
+                          "mt-3 font-extrabold leading-none",
+                          index === 0 ? "text-4xl sm:text-6xl" : "text-3xl",
+                        ]}
+                      >
+                        {experience.title}
+                      </h3>
+                      <p class="mt-4 max-w-md text-sm leading-6 text-white/75">
+                        A considered way to connect place, culture and your own pace of travel.
+                      </p>
+                      <a
+                        class="editorial-link mt-5 inline-flex items-center gap-3 text-sm font-bold"
+                        href={`/destinos/${experience.destination.slug}/`}
+                      >
+                        <>
+                          <span class="editorial-link-label">
+                            Explore destination
+                            <span class="editorial-link-line" aria-hidden="true" />
+                          </span>
+                          <span aria-hidden="true">→</span>
+                        </>
+                      </a>
+                    </>
+                  </div>
+                </>
+              </div>
+            </>
+          </article>
+        ))
+      }
     </div>
   </div>
 </section>
