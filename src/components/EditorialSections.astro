@@ -83,40 +83,44 @@ const seasons = [
         A suggested order for linking the destinations already featured in this guide. Confirm
         current travel details before departure.
       </p>
-    </div><ol class="relative mt-12 grid gap-5 md:grid-cols-4">
+    </div><div class="relative mt-12">
       <div
         data-route-line
         class="absolute left-0 top-7 hidden h-px w-full origin-left bg-vermilion md:block"
+        aria-hidden="true"
       >
-      </div>{
-        route.map((destination, index) => (
-          <li data-route-stop class="relative">
-            <>
-              <span class="grid size-14 place-items-center rounded-full border border-white/30 bg-ink text-sm font-extrabold text-white">
-                0{index + 1}
-              </span>
-              <img
-                src={destination.image}
-                alt={destination.imageAlt}
-                width="320"
-                height="320"
-                loading="lazy"
-                class="mt-6 aspect-[4/3] w-full object-cover opacity-85"
-              />
-              <p class="mt-4 text-sm uppercase tracking-[.2em] text-white/55">
-                {destination.prefecture}
-              </p>
-              <a
-                href={`/destinos/${destination.slug}/`}
-                class="mt-1 inline-block text-2xl font-extrabold hover:text-vermilion"
-              >
-                {destination.city}
-              </a>
-            </>
-          </li>
-        ))
-      }
-    </ol>
+      </div>
+      <ol class="grid gap-5 md:grid-cols-4">
+        {
+          route.map((destination, index) => (
+            <li data-route-stop class="relative">
+              <>
+                <span class="grid size-14 place-items-center rounded-full border border-white/30 bg-ink text-sm font-extrabold text-white">
+                  0{index + 1}
+                </span>
+                <img
+                  src={destination.image}
+                  alt={destination.imageAlt}
+                  width="320"
+                  height="320"
+                  loading="lazy"
+                  class="mt-6 aspect-[4/3] w-full object-cover opacity-85"
+                />
+                <p class="mt-4 text-sm uppercase tracking-[.2em] text-white/55">
+                  {destination.prefecture}
+                </p>
+                <a
+                  href={`/destinos/${destination.slug}/`}
+                  class="mt-1 inline-block text-2xl font-extrabold hover:text-vermilion"
+                >
+                  {destination.city}
+                </a>
+              </>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
   </div>
 </section>
 <section class="bg-paper px-4 py-24 text-ink sm:px-6 sm:py-32 lg:px-8">
@@ -147,7 +151,7 @@ const seasons = [
               </div>
               <div class="max-w-xl">
                 <>
-                  <p class="font-display text-6xl text-vermilion/70">0{index + 1}</p>
+                  <p class="font-display text-6xl text-vermilion">0{index + 1}</p>
                   <p class="mt-4 text-sm font-bold uppercase tracking-[.24em] text-vermilion">
                     {note.place}
                   </p>
@@ -267,7 +271,7 @@ const seasons = [
       Start with a place, follow your curiosity, and keep the official guides close as you plan.
     </p><a
       href="/destinos/"
-      class="mt-9 inline-flex rounded-full bg-vermilion px-7 py-4 text-sm font-extrabold uppercase text-white transition hover:bg-orange-600"
+      class="mt-9 inline-flex rounded-full bg-vermilion px-7 py-4 text-sm font-extrabold uppercase text-white transition hover:bg-orange-700"
       >Explore destinations</a
     >
   </div>

@@ -5,7 +5,8 @@
   --font-display: "Rokkitt", Georgia, serif;
   --color-ink: #070707;
   --color-paper: #f7f1e8;
-  --color-vermilion: #ff3d00;
+  --color-vermilion: #b52a00;
+  --color-vermilion-bright: #ff3d00;
   --color-matcha: #76885b;
   --color-indigo-night: #141727;
 }
@@ -39,6 +40,11 @@ body {
 img {
   max-width: 100%;
   display: block;
+}
+
+/* Meets contrast on paper while retaining a brighter accent on dark scenes. */
+:where(.bg-ink, .bg-indigo-night) .text-vermilion {
+  color: var(--color-vermilion-bright);
 }
 
 .editorial-link-label,
