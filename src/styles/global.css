@@ -63,6 +63,11 @@ img {
   color: var(--color-vermilion-bright);
 }
 
+/* `body` uses `bg-ink`, so restore the AA-safe accent in nested paper panels. */
+.bg-paper .text-vermilion {
+  color: var(--color-vermilion);
+}
+
 .editorial-link-label,
 [data-culture-note] a {
   position: relative;
