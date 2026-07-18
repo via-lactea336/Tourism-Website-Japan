@@ -89,6 +89,12 @@ const editorialExperiences = experiences.map((title, index) => ({
               <img
                 data-experience-image
                 src={experience.visual.src}
+                srcset={`${experience.visual.src.replace(".webp", "-640.webp")} 640w, ${experience.visual.src.replace(".webp", "-960.webp")} 960w, ${experience.visual.src} 1536w`}
+                sizes={
+                  index === 0
+                    ? "(min-width: 1024px) 58vw, 100vw"
+                    : "(min-width: 1024px) 42vw, 100vw"
+                }
                 alt={experience.visual.alt}
                 width={experience.visual.width}
                 height={experience.visual.height}

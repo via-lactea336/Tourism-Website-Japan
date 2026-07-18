@@ -7,15 +7,22 @@ import { featuredDestinations } from "../data/site";
   data-hero
   class="relative isolate flex min-h-screen items-end overflow-hidden bg-ink px-4 pb-8 pt-28 sm:px-6 lg:px-8"
 >
-  <img
-    data-hero-image
-    class="absolute inset-0 -z-20 h-full w-full object-cover"
-    src="/img/jean-vella.webp"
-    alt="Mount Fuji seen beyond a Japanese town"
-    width="1600"
-    height="1000"
-    fetchpriority="high"
-  />
+  <picture>
+    <source
+      type="image/webp"
+      srcset="/img/jean-vella-768.webp 768w, /img/jean-vella-1280.webp 1280w, /img/jean-vella.webp 1600w"
+      sizes="100vw"
+    />
+    <img
+      data-hero-image
+      class="absolute inset-0 -z-20 h-full w-full object-cover"
+      src="/img/jean-vella.webp"
+      alt="Mount Fuji seen beyond a Japanese town"
+      width="1600"
+      height="1000"
+      fetchpriority="high"
+    />
+  </picture>
   <div
     data-hero-overlay
     class="absolute inset-0 -z-10 bg-gradient-to-b from-black/20 via-black/45 to-black"
