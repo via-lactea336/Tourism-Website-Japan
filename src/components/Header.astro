@@ -14,3 +14,47 @@ const pathname = Astro.url.pathname;
     input?.addEventListener("input", render); form?.addEventListener("submit", (event) => { event.preventDefault(); const first = results?.querySelector("a"); if (first) first.click(); });
   }; setup(); document.addEventListener("astro:after-swap", setup);
 </script>
+
+<script>
+  const enhanceMobileMenu = () => {
+    const menu = document.querySelector<HTMLElement>("[data-mobile-menu]");
+    if (!menu || menu.dataset.enhanced) return;
+    menu.dataset.enhanced = "true";
+    menu.innerHTML = `
+      <div class="grid gap-1" data-mobile-menu-list>
+        <a data-menu-item class="rounded-md px-4 py-3 text-sm font-bold uppercase text-white/85 hover:bg-white/10 focus-visible:outline-2" href="/">Home</a>
+        <div class="rounded-md" data-menu-destinations>
+          <button data-destination-toggle class="flex w-full items-center justify-between rounded-md px-4 py-3 text-left text-sm font-bold uppercase text-white/85 hover:bg-white/10 focus-visible:outline-2" type="button" aria-expanded="false">Destinations <span aria-hidden="true">+</span></button>
+          <div data-destination-submenu class="grid gap-1 overflow-hidden px-4 pb-2" hidden>
+            <a class="block py-2 text-sm font-semibold text-white/65 hover:text-vermilion" href="/destinos/tokyo/">Tokyo</a>
+            <a class="block py-2 text-sm font-semibold text-white/65 hover:text-vermilion" href="/destinos/kyoto/">Kyoto</a>
+            <a class="block py-2 text-sm font-semibold text-white/65 hover:text-vermilion" href="/destinos/osaka/">Osaka</a>
+            <a class="block py-2 text-sm font-semibold text-white/65 hover:text-vermilion" href="/destinos/nara/">Nara</a>
+          </div>
+        </div>
+        <a data-menu-item class="rounded-md px-4 py-3 text-sm font-bold uppercase text-white/85 hover:bg-white/10 focus-visible:outline-2" href="/#history">Stories</a>
+        <a data-menu-item class="rounded-md px-4 py-3 text-sm font-bold uppercase text-white/85 hover:bg-white/10 focus-visible:outline-2" href="/#experiences">Experiences</a>
+      </div>`;
+
+    const toggle = menu.querySelector<HTMLButtonElement>("[data-destination-toggle]");
+    const submenu = menu.querySelector<HTMLElement>("[data-destination-submenu]");
+    toggle?.addEventListener("click", () => {
+      const expanded = toggle.getAttribute("aria-expanded") === "true";
+      toggle.setAttribute("aria-expanded", String(!expanded));
+      toggle.querySelector("span")!.textContent = expanded ? "+" : "−";
+      submenu?.toggleAttribute("hidden", expanded);
+    });
+
+    menu.addEventListener("click", (event) => {
+      const link = (event.target as HTMLElement).closest<HTMLAnchorElement>("a");
+      if (!link) return;
+      menu.classList.add("hidden");
+      const button = document.querySelector<HTMLButtonElement>("[data-menu-button]");
+      button?.setAttribute("aria-expanded", "false");
+      button?.setAttribute("aria-label", "Open navigation menu");
+    });
+  };
+
+  enhanceMobileMenu();
+  document.addEventListener("astro:page-load", enhanceMobileMenu);
+</script>

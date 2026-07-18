@@ -1,0 +1,55 @@
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+  let context: gsap.Context | undefined;
+
+  const clean = () => {
+    context?.revert();
+    context = undefined;
+  };
+
+  const init = () => {
+    clean();
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const root = document.querySelector<HTMLElement>("[data-destination-index], [data-destination-page]");
+    if (!root) return;
+
+    context = gsap.context(() => {
+      const hero = root.querySelector<HTMLElement>("[data-destination-hero]");
+      if (!hero) return;
+      const eyebrow = root.querySelector("[data-destination-eyebrow]");
+      const title = root.querySelector("[data-destination-title]");
+      const intro = root.querySelector("[data-destination-intro]");
+      const heroMedia = root.querySelector("[data-destination-hero-media]");
+      const heroTimeline = gsap.timeline({ defaults: { ease: "power3.out" } });
+      if (eyebrow) heroTimeline.from(eyebrow, { x: -18, autoAlpha: 0, duration: 0.45 });
+      if (title) heroTimeline.from(title, { yPercent: 105, duration: 0.72 }, "-=0.15");
+      if (intro) heroTimeline.from(intro, { y: 18, autoAlpha: 0, duration: 0.48 }, "-=0.25");
+      if (heroMedia) heroTimeline.from(heroMedia, { scale: 1.06, duration: 1.05, ease: "power2.out" }, 0);
+
+      gsap.utils.toArray<HTMLElement>("[data-index-destination]").forEach((item) => {
+        const image = item.querySelector("img");
+        gsap.from(item, { y: 32, autoAlpha: 0, duration: 0.65, ease: "power3.out", scrollTrigger: { trigger: item, start: "top 88%", once: true } });
+        if (image) gsap.to(image, { yPercent: -4, ease: "none", scrollTrigger: { trigger: item, start: "top bottom", end: "bottom top", scrub: 0.65 } });
+      });
+
+      gsap.utils.toArray<HTMLElement>("[data-destination-chapter]").forEach((chapter, index) => {
+        const media = chapter.querySelector("[data-chapter-media]");
+        const copy = chapter.querySelector("[data-chapter-copy]");
+        if (!media && !copy) return;
+        const chapterTimeline = gsap.timeline({ scrollTrigger: { trigger: chapter, start: "top 76%", once: true } });
+        if (media) chapterTimeline.from(media, { clipPath: index % 2 ? "inset(0 0 0 100%)" : "inset(0 100% 0 0)", duration: 0.8, ease: "power3.out" });
+        if (copy) chapterTimeline.from(copy, { x: index % 2 ? -24 : 24, autoAlpha: 0, duration: 0.5 }, media ? "-=0.4" : 0);
+      });
+
+      const dossier = root.querySelector("[data-dossier]");
+      const dossierRows = root.querySelectorAll("[data-dossier-row]");
+      if (dossier && dossierRows.length) gsap.from(dossierRows, { clipPath: "inset(0 0 100% 0)", stagger: 0.1, duration: 0.45, scrollTrigger: { trigger: dossier, start: "top 78%", once: true } });
+    }, root);
+  };
+
+  document.addEventListener("astro:before-swap", clean);
+  document.addEventListener("astro:page-load", init);
+</script>
