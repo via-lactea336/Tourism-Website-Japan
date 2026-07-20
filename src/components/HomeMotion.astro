@@ -5,6 +5,13 @@
   let activeHome: HTMLElement | undefined;
   let homeObserver: MutationObserver | undefined;
   let booted = false;
+  let disposed = false;
+  let idleCallback: number | undefined;
+  let fallbackTimer: number | undefined;
+  const lifecycle = new AbortController();
+  const motionWindow = window as Window & { __tourismHomeMotionTeardown?: () => void };
+
+  motionWindow.__tourismHomeMotionTeardown?.();
 
   const cleanHomeMotion = () => {
     homeObserver?.disconnect();
@@ -14,9 +21,26 @@
     activeHome = undefined;
   };
 
+  const teardown = () => {
+    disposed = true;
+    if (idleCallback !== undefined) window.cancelIdleCallback?.(idleCallback);
+    if (fallbackTimer !== undefined) window.clearTimeout(fallbackTimer);
+    lifecycle.abort();
+    cleanHomeMotion();
+    if (motionWindow.__tourismHomeMotionTeardown === teardown) {
+      delete motionWindow.__tourismHomeMotionTeardown;
+    }
+  };
+
+  motionWindow.__tourismHomeMotionTeardown = teardown;
+
   const initHomeMotion = () => {
     const home = document.querySelector<HTMLElement>("[data-home]");
-    if (!home || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!home) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      home.removeAttribute("data-motion-pending");
+      return;
+    }
     if (activeHome === home && context) return;
 
     context?.revert();
@@ -24,16 +48,10 @@
 
     context = gsap.context(() => {
       const hero = home.querySelector<HTMLElement>("[data-hero]");
-      const header = document.querySelector<HTMLElement>("header");
       if (!hero) return;
       gsap
         .timeline({ defaults: { ease: "power3.out" } })
-        .from(header, { y: -20, autoAlpha: 0, duration: 0.7 }, 0.1)
-        .from(
-          "[data-hero-image]",
-          { scale: 1.12, autoAlpha: 0.72, duration: 1.5, ease: "power2.out" },
-          0,
-        )
+        .from("[data-hero-image]", { scale: 1.12, duration: 1.5, ease: "power2.out" }, 0)
         .from("[data-hero-overlay]", { autoAlpha: 0, duration: 1.1 }, 0.15)
         .from("[data-hero-eyebrow]", { x: -22, autoAlpha: 0, duration: 0.55 }, 0.58)
         .from(
@@ -59,6 +77,7 @@
           },
           1.02,
         );
+      home.removeAttribute("data-motion-pending");
       gsap.to("[data-hero-image]", {
         yPercent: 5,
         ease: "none",
@@ -275,7 +294,7 @@
   };
 
   const bootHomeMotion = async () => {
-    if (booted) return;
+    if (booted || disposed) return;
     booted = true;
 
     const [gsapModule, scrollTriggerModule] = await Promise.all([
@@ -285,23 +304,24 @@
 
     gsap = gsapModule.gsap;
     ScrollTrigger = scrollTriggerModule.ScrollTrigger;
+    if (disposed) return;
     gsap.registerPlugin(ScrollTrigger);
 
     // Astro can evaluate component scripts before `<main data-home>` exists.
     // Watch for that mount on direct loads; `activeHome` keeps router events idempotent.
     scheduleHomeMotion();
-    document.addEventListener("astro:before-swap", cleanHomeMotion);
-    document.addEventListener("astro:page-load", scheduleHomeMotion);
+    document.addEventListener("astro:before-swap", cleanHomeMotion, { signal: lifecycle.signal });
+    document.addEventListener("astro:page-load", scheduleHomeMotion, { signal: lifecycle.signal });
   };
 
   const deferHomeMotion = () => {
     const requestIdleCallback = window.requestIdleCallback;
     if (requestIdleCallback) {
-      requestIdleCallback(bootHomeMotion, { timeout: 1200 });
+      idleCallback = requestIdleCallback(bootHomeMotion, { timeout: 250 });
       return;
     }
 
-    setTimeout(bootHomeMotion, 500);
+    fallbackTimer = window.setTimeout(bootHomeMotion, 0);
   };
 
   deferHomeMotion();

@@ -58,6 +58,32 @@ img {
   display: block;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  [data-motion-pending][data-home] [data-hero-image] {
+    transform: scale(1.12);
+  }
+
+  [data-motion-pending][data-home] [data-hero-overlay],
+  [data-motion-pending][data-home] [data-hero-eyebrow],
+  [data-motion-pending][data-home] [data-hero-title],
+  [data-motion-pending][data-home] [data-hero-description],
+  [data-motion-pending][data-home] [data-destination-card],
+  [data-motion-pending][data-destination-index] [data-destination-eyebrow],
+  [data-motion-pending][data-destination-index] [data-destination-title],
+  [data-motion-pending][data-destination-index] [data-destination-intro],
+  [data-motion-pending][data-destination-page] [data-destination-eyebrow],
+  [data-motion-pending][data-destination-page] [data-destination-title],
+  [data-motion-pending][data-destination-page] [data-destination-intro] {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  [data-motion-pending][data-destination-index] [data-destination-hero-media],
+  [data-motion-pending][data-destination-page] [data-destination-hero-media] {
+    transform: scale(1.06);
+  }
+}
+
 /* Meets contrast on paper while retaining a brighter accent on dark scenes. */
 :where(.bg-ink, .bg-indigo-night) .text-vermilion {
   color: var(--color-vermilion-bright);
